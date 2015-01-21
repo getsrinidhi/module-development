@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function first_example_menu() {
+		$items['/Welcome-page']=array(
+			'title'=>'Welcome page',
+			'description'=>'Welcome to my first module',
+			 'page callback' => 'first_example_callback',
+			 'access callback' => TRUE,
+			 // 'access arguments'=>array('access content'),
+		);
+	return $items;
+	}
+/**
+ * Page callback for /Welcome-page.
+ */	
+function first_example_callback(){
+return 'Welcome to my first module';
+}
+?>	
+	
