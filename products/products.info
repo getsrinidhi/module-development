@@ -1,0 +1,4 @@
+name = products
+description = Allows us to create product content type
+core = 7.x
+
