@@ -1,0 +1,4 @@
+- Create a module named "first_example"
+- Install the module into your environment
+- Create a menu named "Welcome-page"
+- This page should return the text "Welcome to my first module".
