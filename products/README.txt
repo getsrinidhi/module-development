@@ -5,4 +5,4 @@
    1) Title
    2) Body
    3) Price
- - All these should be created programmatically.
+ - All these should be created programmatically
