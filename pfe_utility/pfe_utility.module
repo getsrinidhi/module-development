@@ -1,0 +1,38 @@
+<?php
+
+
+function pfe_utility_block_info() {
+   
+  $blocks['your_block'] = array(
+    // info: The name of the block.
+    'info' => t('pfe_user_login'),
+  );
+
+  return $blocks;
+}
+
+function pfe_utility_block_view($delta = '') {
+  // The $delta parameter tells us which block is being requested.
+  switch ($delta) {
+    case 'your_block':
+      // Create your block content here
+      $block['subject'] = t('Title of first block');
+
+      global $user;
+      if ( 
+      $user->uid ) {
+        $destination = array('destination' => $_GET['q']);
+         
+      }
+      else {
+          $destination = array('destination' => $_GET['q']);
+          $block['content'] = t('<a href="@login">Log in</a> or <a href="@register">register</a> to post comments', array('@login' => url('user/login', array('query' => $destination)), '@register' => url('user/register', array('query' => $destination))));
+      }
+  
+      break;
+  }
+
+  return $block;
+}
+
+
