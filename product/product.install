@@ -1,0 +1,94 @@
+<?php
+/**
+ * Implements hook_install(). To add body field to the contnt type.
+ */
+function product_install() {
+    node_types_rebuild();
+    $types = node_type_get_types();
+    node_add_body_field($types['product']); 
+	add_custom_fields();
+}
+
+/**
+ * Implements hook_uninstall(). 
+ */
+function product_uninstall() {
+    $ournewtype = 'product';
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $ournewtype));
+    $nodeids = array();
+    foreach ($result as $row) {
+        $nodeids[] = $row->nid;
+    }
+    node_delete_multiple($nodeids);
+	delete_custom_fields();
+    node_type_delete($ournewtype);
+	$ournewtype = 'product';
+	field_purge_batch(500);
+    
+}
+
+/**
+ * Defining custom fields and their instances
+ */
+
+function _product_installed_fields() {
+    $t = get_t();
+    return array(
+        'product_price' => array(
+            'field_name' => 'product_price',
+            'label' => $t('Price of the product'),
+            'type' => 'number_decimal'
+        )
+	);
+}	
+function _product_installed_instances() {
+    $t = get_t();
+    return array(
+        'product_price' => array(
+            'field_name' => 'product_price',
+            'type' => 'number_decimal',
+            'label' => $t('Price of the product'),
+            'widget' => array(
+                'type' => 'text_textfield'
+            ),
+            'display' => array(
+                'example_node_list' => array(
+                    'label' => $t('Price of the product'),
+                    'type' => 'number_decimal'
+                )
+            )
+        )
+		
+	);
+}
+/**
+ * Creating custom fields
+ */
+
+function add_custom_fields() {
+    foreach (_product_installed_fields() as $field) {
+        field_create_field($field);
+    }
+    foreach (_product_installed_instances() as $fieldinstance) {
+        $fieldinstance['entity_type'] = 'node';
+        $fieldinstance['bundle'] = 'product';
+        print_r($fieldinstance);
+        field_create_instance($fieldinstance);
+    }
+}
+
+/**
+ * Deleting custom fields and instances
+ */
+
+ 
+function delete_custom_fields() {
+    foreach (array_keys(_product_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'product');
+    foreach ($instances as $instance_name => $fieldinstance) {
+        field_delete_instance($fieldinstance);
+    }
+}

@@ -1,0 +1,106 @@
+<?php
+/**
+ * Implements hook_node_info()
+ */
+function product_node_info() {
+    return array(
+        'product' => array(
+            'name' => t('Product'),
+            'base' => 'product',
+            'description' => t('You can define new Products here'),
+            'has_title' => TRUE,
+            'title_label' => t('Product title')
+         )
+    );
+}
+/**
+ * Implements hook_menu()
+ */
+function product_menu() {
+  $items['list-product-data'] = array(
+    'title' => t('Your Projects'),
+    'description' => 'Your Sleetmute FPA Projects',
+    'page callback' => 'prodcuts_list',
+    'access arguments' => array('access content'),
+    // 'type' => MENU_NORMAL_ITEM,
+	  'access callback' => TRUE,
+      // 'type' => MENU_NORMAL_ITEM
+  );
+  return $items;
+  }
+  
+  function prodcuts_list() {
+  $header = array(
+    array(
+      'data' => t('Nid'),
+      'field' => 'nid'
+    ),
+    array(
+      'data' => t('Title'),
+      'field' => 'title'
+    ),
+    array(
+      'data' => t('Status'),
+      'field' => 'status'
+    ),
+    array(
+      'data' => t('Created'),
+      'field' => 'created'
+    ),
+    array(
+      'data' => t('Updated'),
+      'field' => 'changed'
+    ),
+  );
+  
+  
+  $data = array();
+  
+  # set the database table
+  $query = db_select('node', 'n')->condition('type', 'product')
+  ->extend('PagerDefault')->extend('TableSort') ->orderByHeader($header);
+  # configure the query
+  $query->fields('n', array(
+      'nid',
+      'title',
+      'status',
+      'created',
+      'changed',
+      // 'created' => format_date($node->created, 'short')
+  ))->limit(10);
+
+
+ 
+  # execute the query
+  $results = $query->execute();
+  $rows    = array();
+
+  foreach ($results as $row) {
+    $data[] = array(
+      $row->nid,
+      $row->title,
+      $row->status,
+      'created' => format_date($row->created, 'custom', 'd-m-Y'),
+      'changed' => format_date($row->changed, 'custom', 'd-m-Y'),
+    );
+  }
+  // $form['nodes'] = array(
+    // '#type' => 'tableselect',
+    // '#header' => $header,
+    // '#options' => $data,
+    // '#empty' => t('No content available.'),
+  // );
+  
+  $output = theme('table', array('header' => $header, 'rows' => $data));
+ 
+  $output .= theme('pager');
+  return $output;
+
+}
+/**
+ * Implement hook_form()
+ */
+function product_form($node, $form_state) {
+    return node_content_form($node, $form_state);
+}
+

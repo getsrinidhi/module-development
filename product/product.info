@@ -1,0 +1,6 @@
+name = Product
+description = A new content type of Product
+package = Product Custom node Type
+core = 7.x
+files[] = product.install
+files[] = product.module
