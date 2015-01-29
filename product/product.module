@@ -44,6 +44,10 @@ function product_menu() {
       'field' => 'status'
     ),
     array(
+      'data' => t('Product Price Value'),
+      'field' => 'product_price_value'
+    ),
+    array(
       'data' => t('Created'),
       'field' => 'created'
     ),
@@ -57,40 +61,33 @@ function product_menu() {
   $data = array();
   
   # set the database table
-  $query = db_select('node', 'n')->condition('type', 'product')
-  ->extend('PagerDefault')->extend('TableSort') ->orderByHeader($header);
-  # configure the query
-  $query->fields('n', array(
-      'nid',
-      'title',
-      'status',
-      'created',
-      'changed',
-      // 'created' => format_date($node->created, 'short')
-  ))->limit(10);
+  $res = db_select('node', 'n')
+          ->condition('type', 'product')
+          ->extend('PagerDefault')->extend('TableSort') ->orderByHeader($header)
+          ->fields('n', array('nid','title','status','created','changed',))
+          ->limit(10)->execute()->fetchAll();
+  //echo"<pre>";print_r($res);exit;
 
-
+  
+/*  $nodes = node_load_multiple($nids); */
  
   # execute the query
-  $results = $query->execute();
-  $rows    = array();
+  /* $results = $query->execute();*/
 
-  foreach ($results as $row) {
-    $data[] = array(
-      $row->nid,
-      $row->title,
-      $row->status,
-      'created' => format_date($row->created, 'custom', 'd-m-Y'),
-      'changed' => format_date($row->changed, 'custom', 'd-m-Y'),
+  foreach ($res as $key => $value) {
+  $nid = $value->nid;
+  $node = node_load($nid);
+  
+  $data[]= array(
+      $value->nid,
+      $value->title,
+      $value->status,
+      $node->product_price[LANGUAGE_NONE][0]['value'],
+      'created' => format_date($value->created, 'custom', 'd-m-Y'),
+      'changed' => format_date($value->changed, 'custom', 'd-m-Y'),
     );
   }
-  // $form['nodes'] = array(
-    // '#type' => 'tableselect',
-    // '#header' => $header,
-    // '#options' => $data,
-    // '#empty' => t('No content available.'),
-  // );
-  
+ 
   $output = theme('table', array('header' => $header, 'rows' => $data));
  
   $output .= theme('pager');
