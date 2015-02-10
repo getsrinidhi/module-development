@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the student module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function student_schema() {
+  $schema['student_info'] = array(
+    'description' => t('First table'),
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'name' => array(
+        'description' => t('Name'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'email' => array(
+        'description' => t('Email'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'age' => array(
+        'description' => t('Age'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'sex' => array(
+        'description' => t('Sex'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'country' => array(
+        'description' => t('Country'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the node was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      )
+      ),
+    'primary key' => array(
+      'sid'
+    )
+  );
+  
+  /**
+   * Implements hook_schema().
+   */
+  $schema['student_subform'] = array(
+    
+    'description' => 'First table.',
+    'fields' => array(
+      'sid' => array(
+        'description' => t('My unique identifier'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'sub_id' => array(
+        'description' => t('My form unique identifier'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      )
+    )
+  );
+  return $schema;
+}

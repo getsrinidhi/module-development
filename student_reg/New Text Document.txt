@@ -1,0 +1,27 @@
+Hi All, 
+
+Thanks for completing the task assigned last week, please find the details below for the task to be completed till this weekend ie Fri.
+
+1) Create a form using form API having following fields
+-First Name (textfield)
+- last Name (textfield)
+- Mobile Number (textfield)
+- Address (textarea)
+- Age (textfield)
+- Country (drop down with list of few countires)
+- Agree to terms and conditions.
+
+2) When the user submits the form, it should be saved in the table named "user_registration_form"
+- Create a table using hook_schema with the required fields for the form.
+- Apply all the possible server side validations after the form is submitted.
+
+3) Create a page named user_registration and display the form on this page.
+
+4) Create a custom block and render the form on the right side bar of home page.
+
+Kindly let us know if you have any doubts.
+
+*Please make sure you complete the task on time. Also those who haven't completed the task yet, please complete and send over the links.
+
+Regards,
+Harish Naidu
